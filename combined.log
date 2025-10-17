@@ -1,0 +1,8 @@
+{"level":"info","message":"Database initialized successfully","service":"shopping-list-api","timestamp":"2025-10-17T08:24:17.756Z"}
+{"level":"info","message":"Server listening on http://localhost:3000","service":"shopping-list-api","timestamp":"2025-10-17T08:24:17.761Z"}
+{"level":"info","message":"Database initialized successfully","service":"shopping-list-api","timestamp":"2025-10-17T08:26:28.749Z"}
+{"level":"info","message":"Server listening on http://localhost:3000","service":"shopping-list-api","timestamp":"2025-10-17T08:26:28.757Z"}
+{"level":"info","message":"Database initialized successfully","service":"shopping-list-api","timestamp":"2025-10-17T08:26:55.058Z"}
+{"level":"info","message":"Database initialized successfully","service":"shopping-list-api","timestamp":"2025-10-17T08:30:07.765Z"}
+{"level":"info","message":"Server listening on http://localhost:3000","service":"shopping-list-api","timestamp":"2025-10-17T08:30:07.770Z"}
+{"level":"warn","message":"Route not found: GET /main.d974ccf3f50b1cdd58de.hot-update.json","service":"shopping-list-api","timestamp":"2025-10-17T08:38:17.677Z"}
