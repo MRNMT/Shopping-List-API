@@ -1,6 +1,6 @@
-# Shopping List REST API (Node.js + TypeScript)
+# Shopping List REST API
 
-A secure, persistent Shopping List REST API that allows users to register, login, and manage their personal shopping items with full CRUD operations.
+A simple Shopping List REST API built with Node.js and TypeScript. Uses in-memory storage (array of objects) for managing shopping items.
 
 ## Requirements
 - Node.js >= 14
@@ -24,90 +24,62 @@ npm start
 
 Server runs on `http://localhost:3000` by default.
 
-## Authentication
-All item endpoints require authentication. You must first register and login to get a JWT token, then include it in the Authorization header:
-```
-Authorization: Bearer <your-jwt-token>
-```
+## Endpoints
 
-## Endpoints (JSON request/response)
-
-### User Management
-- `POST /users/register` — Register a new user.
-  - Body: `{ "username": "johndoe", "password": "securepassword" }`
-  - Response: `201 Created` with JWT token and user info
-
-- `POST /users/login` — Login user.
-  - Body: `{ "username": "johndoe", "password": "securepassword" }`
-  - Response: `200 OK` with JWT token and user info
-
-### Shopping Items (Requires Authentication)
-- `POST /items` — Create an item.
-  - Headers: `Authorization: Bearer <token>`
-  - Body: `{ "name": "Milk", "quantity": "1L" }` or `{ "name": "Eggs", "quantity": 12 }`
+### Shopping Items
+- `POST /items` — Create a new item.
+  - Body: `{ "name": "Milk", "quantity": "1L", "purchased": false }`
   - Response: `201 Created` with created item
+  - Validation: `name` is required, `quantity` and `purchased` are optional
 
-- `GET /items` — Get all user's items.
-  - Headers: `Authorization: Bearer <token>`
-  - Response: `200 OK` `{ "success": true, "data": [ ... ] }`
+- `GET /items` — Get all items.
+  - Response: `200 OK` with array of items
 
-- `GET /items/:id` — Get single item by id.
-  - Headers: `Authorization: Bearer <token>`
+- `GET /items/:id` — Get single item by ID.
   - Response: `200 OK` with item or `404 Not Found`
 
 - `PUT /items/:id` — Update item fields (name, quantity, purchased)
-  - Headers: `Authorization: Bearer <token>`
   - Body example: `{ "name":"Milk", "quantity": "2L", "purchased": true }`
   - Response: `200 OK` with updated item or `404 Not Found`
 
 - `DELETE /items/:id` — Delete an item
-  - Headers: `Authorization: Bearer <token>`
   - Response: `204 No Content` on success or `404 Not Found`
 
-## Response shape
-All successful responses use the JSON envelope:
+## Response Examples
+
+### Success Response
 ```json
 {
-  "success": true,
-  "data": ...,
-  "message": "optional human message"
+  "id": "uuid-here",
+  "name": "Milk",
+  "quantity": "1L",
+  "purchased": false
 }
 ```
 
-Errors use:
+### Error Response
 ```json
 {
-  "success": false,
-  "error": "Description of error",
-  "details": { /* optional */ }
+  "error": "Validation error",
+  "details": {
+    "name": "Name is required and must be a non-empty string"
+  }
 }
 ```
+
+## Testing with Postman
+1. Create a new request
+2. Set method to POST
+3. URL: `http://localhost:3000/items`
+4. Headers: `Content-Type: application/json`
+5. Body: raw JSON with item data
+6. Send request
 
 ## Notes
-- Data is stored persistently in SQLite database. Items are user-specific.
-- Authentication is required for all item operations.
-- Use Postman, curl or any REST client to test the endpoints.
-- Example curl to register:
+- Data is stored in memory and will be lost when the server restarts
+- Use Postman, curl or any REST client to test the endpoints
+- Example curl:
 ```bash
-curl -X POST http://localhost:3000/users/register -H "Content-Type: application/json" -d '{ "username":"johndoe", "password":"securepassword" }'
-```
-- Example curl to create an item (replace TOKEN with actual JWT):
-```bash
-curl -X POST http://localhost:3000/items -H "Content-Type: application/json" -H "Authorization: Bearer TOKEN" -d '{ "name":"Bread", "quantity":"1 loaf" }'
+curl -X POST http://localhost:3000/items -H "Content-Type: application/json" -d '{"name": "Bread", "quantity": "1 loaf"}'
 ```
 
-## Files included
-- `src/server.ts` — entry point with database initialization
-- `src/models/item.ts` — Item type definition
-- `src/models/user.ts` — User type definitions
-- `src/routes/items.ts` — Express router implementing item CRUD with auth
-- `src/routes/users.ts` — Express router for user registration and login
-- `src/middleware/auth.ts` — JWT authentication middleware
-- `src/middleware/errorHandler.ts` — error handling middleware
-- `src/database/db.ts` — SQLite database connection and queries
-- `src/utils/auth.ts` — JWT and password utilities
-- `src/utils/logger.ts` — Winston logging setup
-
----
-
-#
